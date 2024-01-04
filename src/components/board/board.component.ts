@@ -15,6 +15,8 @@ export class BoardComponent {
   board: number[][] = [];
   playerOneScore: number = 0;
   playerTwoScore: number = 0;
+  isMatchOver: boolean = false;
+  isTokenFalling: boolean = false;
 
   ngOnInit() {
     this.initializeBoard();
@@ -28,9 +30,15 @@ export class BoardComponent {
       }
     }
   }
+
+  trackByCell(row: number, col: number) {
+    return `${row}-${col}`;
+  }
+
   restartGame() {
     this.initializeBoard();
     this.currentPlayer = 1;
+    this.isMatchOver = false;
   }
 
   updateScore() {
@@ -40,6 +48,7 @@ export class BoardComponent {
       this.playerTwoScore++;
     }
   }
+
   checkHorizontal(row: number, col: number): boolean {
     const player = this.board[row][col];
     let count = 1;
@@ -119,6 +128,7 @@ export class BoardComponent {
 
     return count >= 4;
   }
+
   checkForWin(row: number, col: number): boolean {
     // Implementa qui la logica per controllare se c'è una vittoria
     // in base alla mossa effettuata nella riga e colonna specificate.
@@ -130,26 +140,38 @@ export class BoardComponent {
       this.checkDiagonal(row, col)
     );
   }
+
   makeMove(col: number) {
-    for (let i = this.rows - 1; i >= 0; i--) {
+    if (this.isMatchOver || this.isTokenFalling) {
+      return;
+    }
+
+    for (let i = 0; i <= this.rows - 1; i++) {
       if (this.board[i][col] === 0) {
-        this.board[i][col] = this.currentPlayer;
-        const rowWithToken = this.rows - 1 - i; // Calcola la riga in base alla posizione inserita
+        const currentCellPlayer = this.currentPlayer;
+
+        this.isTokenFalling = true;
+
+        this.board[i][col] = currentCellPlayer; // Mostra il gettone dopo un breve ritardo per l'animazione di caduta
+
         setTimeout(() => {
-          this.board[i][col] = this.currentPlayer; // Mostra il gettone dopo un breve ritardo per l'animazione di caduta
-        }, 100 * rowWithToken);
+          this.isTokenFalling = false; // Resetta il flag per permettere di effettuare una nuova mossa
+        }, 500);
+
         if (
           this.checkForWin(i, col) ||
           this.checkVertical(i, col) ||
           this.checkDiagonal(i, col)
         ) {
           this.updateScore();
-          alert(`Giocatore ${this.currentPlayer} ha vinto!`);
-          this.initializeBoard();
+          setTimeout(() => {
+            alert(`Giocatore ${currentCellPlayer} ha vinto!`); // Mostra il risultato con un ritardo per mostrare prima il gettone
+          });
+          this.isMatchOver = true;
         } else {
           let fullColumns = true;
           for (let j = 0; j < this.cols; j++) {
-            if (this.board[0][j] === 0) {
+            if (this.board[this.rows - 1][j] === 0) {
               fullColumns = false;
               break;
             }
@@ -157,11 +179,12 @@ export class BoardComponent {
 
           if (fullColumns) {
             alert('La griglia è piena, nessuno ha vinto.');
-            this.initializeBoard();
+            this.isMatchOver = true;
           } else {
-            this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+            this.currentPlayer = currentCellPlayer === 1 ? 2 : 1;
           }
         }
+
         return;
       }
     }

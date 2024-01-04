@@ -16,25 +16,67 @@
   border: 1px solid #000;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  overflow: unset;
+  display: grid;
+  place-items: center;
 }
+
 .token {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: top 0.5s ease-in-out; /* Animazione di caduta */
+  width: calc(85% - 2px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  animation: fall 0.5s cubic-bezier(0.96, 0.12, 0.37, 1.05); /* Animazione di caduta */
+  z-index: 100;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+
+  .inner-circle {
+    width: 65%;
+    height: 65%;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+  }
 }
 
 .empty {
   background-color: #fff;
 }
 
-.player-one {
-  background-color: #ff0000; /* Colore del gettone del giocatore 1 */
-  border-radius: 50%;
+.player-one-token {
+  background-color: #f52b1f; /* Colore del gettone del giocatore 1 */
+  outline: 2px solid #be1a11;
+  border-bottom: 2px solid #be1a11;
+  border-top: 1px solid #ff574e;
+
+  .inner-circle {
+    background-color: #be1a11;
+    border-top: 4px solid #9c1610;
+    border-bottom: 2px solid #ff574e;
+  }
 }
 
-.player-two {
-  background-color: #ffff00; /* Colore del gettone del giocatore 2 */
-  border-radius: 50%;
+.player-two-token {
+  background-color: #ffd410; /* Colore del gettone del giocatore 2 */
+  outline: 2px solid #d8b000;
+  border-bottom: 2px solid #d8b000;
+  border-top: 1px solid #ffe56f;
+
+  .inner-circle {
+    background-color: #d8b000;
+    border-top: 4px solid #ac8c00;
+    border-bottom: 2px solid #ffe56f;
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(calc((-52px * var(--row)) - 6px));
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
