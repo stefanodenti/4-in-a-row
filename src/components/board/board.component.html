@@ -1,0 +1,27 @@
+<h1>Forza 4</h1>
+
+<div class="scores">
+  <div>Punteggio Giocatore 1: {{ playerOneScore }}</div>
+  <div>Punteggio Giocatore 2: {{ playerTwoScore }}</div>
+</div>
+
+<div class="board">
+  <div *ngFor="let row of board; let i = index" class="row">
+    <div
+    *ngFor="let cell of row; let j = index"
+    class="cell"
+    (click)="makeMove(j)"
+    [ngClass]="{
+      'empty': cell === 0,
+      'player-one': cell === 1,
+      'player-two': cell === 2
+    }"
+  >
+    <div class="token" *ngIf="cell !== 0" [ngClass]="{ 'player-one-token': cell === 1, 'player-two-token': cell === 2 }"></div>
+  </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button (click)="restartGame()">Riavvia</button>
+</div>
