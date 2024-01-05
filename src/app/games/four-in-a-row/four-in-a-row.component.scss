@@ -1,0 +1,87 @@
+.board {
+  display: flex;
+  flex-direction: column-reverse;
+  border: 2px solid;
+  @apply border-gray-700;
+  margin: 0 auto;
+}
+.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 1px solid;
+  @apply bg-base-200 border-gray-700;
+  cursor: pointer;
+  position: relative;
+  overflow: unset;
+  display: grid;
+  place-items: center;
+}
+
+.token {
+  position: absolute;
+  width: calc(85% - 2px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  animation: fall 0.5s cubic-bezier(0.96, 0.12, 0.37, 1.05); /* Animazione di caduta */
+  z-index: 100;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+
+  .inner-circle {
+    width: 65%;
+    height: 65%;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+  }
+}
+
+.player-one-token {
+  background-color: #f52b1f; /* Colore del gettone del giocatore 1 */
+  outline: 2px solid #be1a11;
+  border-bottom: 2px solid #be1a11;
+  border-top: 1px solid #ff574e;
+
+  .inner-circle {
+    background-color: #be1a11;
+    border-top: 4px solid #9c1610;
+    border-bottom: 2px solid #ff574e;
+  }
+}
+
+.player-two-token {
+  background-color: #ffd410; /* Colore del gettone del giocatore 2 */
+  outline: 2px solid #d8b000;
+  border-bottom: 2px solid #d8b000;
+  border-top: 1px solid #ffe56f;
+
+  .inner-circle {
+    background-color: #d8b000;
+    border-top: 4px solid #ac8c00;
+    border-bottom: 2px solid #ffe56f;
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(calc((-52px * var(--row)) - 6px));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
