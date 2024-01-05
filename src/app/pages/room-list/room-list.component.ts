@@ -7,6 +7,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ModalService } from '../../core/service/modal.service';
 import { Subscription } from 'rxjs';
+import { Room, RoomStateEnum } from '../../core/models/room.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room-list',
@@ -30,46 +32,22 @@ export class RoomListComponent implements OnDestroy {
   newRoomModal: TemplateRef<HTMLElement> | null = null;
   newRoomModalSubscription: Subscription | null = null;
 
-  rooms = [
+  rooms: Room[] = [
     {
       id: 'bdhsjkfb',
       name: 'Room 1',
       game: '4 in a row', // TODO: change to ID
-      host: 'UserPippo123', // TODO: change to ID
-    },
-    {
-      id: 'x8Ys7Dn2',
-      name: 'Room 2',
-      game: '4 in a row',
-      host: 'UserZeta456',
-    },
-    {
-      id: 'p4Qs9Fv6',
-      name: 'Room 3',
-      game: '4 in a row',
-      host: 'UserGamma789',
-    },
-    {
-      id: 'r7Tb1Uv3',
-      name: 'Room 4',
-      game: '4 in a row',
-      host: 'UserDelta012',
-    },
-    {
-      id: 'w2Ei5Oz8',
-      name: 'Room 5',
-      game: '4 in a row',
-      host: 'UserTheta345',
-    },
-    {
-      id: 'y6Rj0Kx7',
-      name: 'Room 6',
-      game: '4 in a row',
-      host: 'UserIota678',
+      hostId: 'UserPippo123', // TODO: change to ID
+      state: RoomStateEnum.Waiting,
+      players: [{
+        id: 'UserPippo123',
+        username: 'UserPippo123',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+      }],
     },
   ];
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService, private router: Router) {}
 
   // Lifecycle hooks
 
@@ -94,7 +72,7 @@ export class RoomListComponent implements OnDestroy {
       modal.closeEvent.subscribe({
         next: (result: boolean) => {
           if (result) {
-            alert('Joining room ' + roomId);
+            this.router.navigate(['/room', roomId]);
           }
         },
       });
@@ -121,5 +99,9 @@ export class RoomListComponent implements OnDestroy {
         },
       });
     }
+  }
+
+  getHost(room: Room) {
+    return room.players.find((player) => player.id === room.hostId)?.username;
   }
 }

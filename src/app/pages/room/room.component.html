@@ -1,1 +1,66 @@
-<p>room works!</p>
+<!-- Toolbar -->
+<div
+  class="mx-20 mb-8 mt-6 p-5 box-border flex justify-between items-center bg-base-300 rounded-xl"
+>
+  <div class="flex gap-4">
+    <button class="btn btn-square btn-ghost text-xl" [routerLink]="'/rooms'">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </button>
+    <h1 class="text-4xl font-bold uppercase">{{ room.name }}</h1>
+  </div>
+  <div class="flex gap-4">
+    <!-- Actions -->
+    @if(room.state === RoomStateEnum.Waiting){
+    <button class="btn btn-square text-xl" (click)="openGameSettings()">
+      <fa-icon [icon]="faCog"></fa-icon>
+    </button>
+    } @else if(room.state === RoomStateEnum.Playing){
+    <button class="btn btn-info btn-square text-xl" (click)="restartGame()">
+      <fa-icon [icon]="faRefresh"></fa-icon>
+    </button>
+    }
+
+    <button
+      class="btn text-xl"
+      [ngClass]="{
+        'btn-success': room.state === RoomStateEnum.Waiting,
+        'btn-error': room.state === RoomStateEnum.Playing
+      }"
+      (click)="switchGameState()"
+    >
+      @if (room.state === RoomStateEnum.Playing) {
+
+      <span><fa-icon [icon]="faStop"></fa-icon> Stop</span>
+
+      } @else if(room.state === RoomStateEnum.Waiting) {
+
+      <span><fa-icon [icon]="faPlay"></fa-icon> Start </span>
+
+      }
+    </button>
+  </div>
+</div>
+
+<!-- Game -->
+<div class="grid grid-cols-12">
+  <div class="col-auto">
+    <app-room-player-list
+      [players]="room.players"
+      [hostId]="room.hostId"
+    ></app-room-player-list>
+  </div>
+  <div class="col-span-10">
+    <div class="flex justify-center items-center">
+      @if(room.game === '4 in a row'){
+      <app-four-in-a-row></app-four-in-a-row>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<ng-template #settings>
+  @if(room.game === '4 in a row'){
+  <app-four-in-a-row-settings></app-four-in-a-row-settings>
+  }
+</ng-template>

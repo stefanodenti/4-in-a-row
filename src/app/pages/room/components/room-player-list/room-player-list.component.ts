@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from '../../../../core/models/room.model';
 
 @Component({
   selector: 'app-room-player-list',
@@ -8,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './room-player-list.component.scss'
 })
 export class RoomPlayerListComponent {
-
+  @Input() players: User[] = [];
+  @Input() hostId: string = '';
 }

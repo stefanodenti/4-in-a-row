@@ -13,4 +13,9 @@ export const routes: Routes = [
         (m) => m.RoomListComponent
       ),
   },
+  {
+    path: 'room/:id',
+    loadComponent: () =>
+      import('./pages/room/room.component'),
+  },
 ];

@@ -35,6 +35,7 @@
     class="card relative overflow-hidden h-64 min-w-56 bg-base-200 border border-base-300 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-200 ease-in-out cursor-pointer"
   >
     <img
+      alt="bg"
       class="absolute bottom-0 left-0 w-full opacity-60 dark:opacity-40"
       src="/assets/images/4-in-a-row.png"
     />
@@ -44,7 +45,8 @@
       <div class="card-title">{{ room.name }}</div>
       <div class="badge badge-primary badge-outline">{{ room.game }}</div>
       <div class="card-actions mt-auto">
-        Hosted by <span class="text-primary font-medium">{{ room.host }}</span>
+        Hosted by
+        <span class="text-primary font-medium">{{ getHost(room) }}</span>
       </div>
     </div>
   </div>

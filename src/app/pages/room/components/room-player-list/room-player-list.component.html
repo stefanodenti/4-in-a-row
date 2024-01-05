@@ -1,1 +1,19 @@
-<p>room-player-list works!</p>
+<div class="card bg-orange-400">
+  <div class="card-body">
+    @for (player of players; track player.id){
+    <div class="flex items-center gap-4">
+      <div class="avatar">
+        <div class="rounded-full w-14 h-14 m-1">
+          <img alt="avatar" [src]="player.avatar" />
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="text-xl font-bold">{{ player.username }}</div>
+        @if (player.id === hostId){
+        <div class="badge badge-primary uppercase">Host</div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
