@@ -1,34 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
 export class BoardComponent {
   rows: number = 6;
-  cols: number = 7;
+  cols: number = 13;
   currentPlayer: number = 1;
   board: number[][] = [];
   playerOneScore: number = 0;
   playerTwoScore: number = 0;
-  isMatchOver: boolean = false;
+  isMatchOver: boolean = true;
   isTokenFalling: boolean = false;
-
+  gameReady: boolean = false;
+  
   ngOnInit() {
     this.initializeBoard();
   }
 
   initializeBoard() {
+    this.board = [];
     for (let i = 0; i < this.rows; i++) {
       this.board[i] = [];
       for (let j = 0; j < this.cols; j++) {
         this.board[i][j] = 0;
       }
     }
+    this.gameReady = true;
   }
 
   trackByCell(row: number, col: number) {
