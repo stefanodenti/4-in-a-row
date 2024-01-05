@@ -1,0 +1,37 @@
+<div class="fixed h-screen w-screen top-0 overflow-hidden z-50">
+  <div
+    [ngClass]="{
+    'mt-8': position === 'top',
+    'items-center': position === 'center',
+    'items-end modal-container mb-8': position === 'bottom',
+    'md:max-w-[500px] lg:max-w-[800px]': size === 'lg',
+    'md:max-w-[300px] lg:max-w-[300px]': size === 'sm',
+    'md:max-w-[400px] lg:max-w-[500px]': size === 'md',
+    }"
+    class="flex justify-center mx-auto w-full px-2 h-full"
+  >
+    <div
+      class="card bg-base-300 w-auto z-50 flex-auto h-max-dynamic overflow-y-auto"
+      [ngClass]="{
+                   'slide-in-top': position === 'top',
+                   'slide-in-bottom': position === 'bottom',
+                   }"
+    >
+      <div class="card-body">
+        <div class="flex justify-between">
+          <div>{{ title }}</div>
+          <div class="flex justify-end" *ngIf="showCloseButton">
+            <button class="btn btn-ghost" (click)="close()">Close</button>
+          </div>
+        </div>
+        <ng-content></ng-content>
+        <ng-template eurekaxModalContainer></ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div
+    (click)="close(true)"
+    class="bg-black bg-opacity-50 z-20 h-screen w-screen fixed top-0"
+  ></div>
+</div>
