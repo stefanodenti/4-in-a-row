@@ -25,9 +25,10 @@ export class AppComponent {
         showCloseButton: true,
         backdropDismiss: false,
       });
+
       modal.closeEvent.subscribe({
         next: () => {
-          alert('closed')
+          // alert('closed');
         },
       });
     }
