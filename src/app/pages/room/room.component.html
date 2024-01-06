@@ -52,7 +52,7 @@
   <div class="xl:col-span-9 bg-gradient-to-br from-base-300 to-base-200">
     <div class="flex justify-center items-center">
       @if(room.game === '4 in a row'){
-      <app-four-in-a-row></app-four-in-a-row>
+      <app-four-in-a-row [settings]="room.settings" [players]="room.players" [changeState]="gameState" (endGame)="room.state = RoomStateEnum.Waiting"></app-four-in-a-row>
       }
     </div>
   </div>
@@ -61,6 +61,6 @@
 <!-- Settings Modal -->
 <ng-template #settings>
   @if(room.game === '4 in a row'){
-  <app-four-in-a-row-settings></app-four-in-a-row-settings>
+  <app-four-in-a-row-settings (changeSettings)="room.settings = $event"></app-four-in-a-row-settings>
   }
 </ng-template>

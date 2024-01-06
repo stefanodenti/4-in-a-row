@@ -1,1 +1,42 @@
-<p>four-in-a-row-settings works!</p>
+<div class="text-xl font-bold mt-4">Sizing</div>
+<div class="flex gap-3 my-3">
+  <button
+    class="btn btn-outline btn-info"
+    (click)="settings.columns = 9; settings.rows = 9;"
+  >
+    9x9
+  </button>
+  <button
+    class="btn btn-outline btn-info"
+    (click)="settings.columns = 13; settings.rows = 9;"
+  >
+    13x9
+  </button>
+  <button
+    class="btn btn-outline btn-info"
+    (click)="settings.columns = 10; settings.rows = 15;"
+  >
+    10x15
+  </button>
+</div>
+<div class="flex gap-2">
+  <div class="form-control">
+    <label>Rows</label>
+    <input
+      class="input input-primary"
+      type="number"
+      [(ngModel)]="settings.rows"
+    />
+  </div>
+  <div class="form-control">
+    <label>Columns</label>
+    <input
+      class="input input-primary"
+      type="number"
+      [(ngModel)]="settings.columns"
+    />
+  </div>
+</div>
+<button class="btn btn-success mt-4 float-end" (click)="save()">
+  <fa-icon [icon]="faCheck"></fa-icon> Save
+</button>

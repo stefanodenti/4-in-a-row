@@ -31,12 +31,12 @@
 }
 
 .token {
+  @apply z-10;
   position: absolute;
   width: calc(85% - 2px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   animation: fall 0.5s cubic-bezier(0.96, 0.12, 0.37, 1.05); /* Animazione di caduta */
-  z-index: 100;
   box-sizing: border-box;
   display: grid;
   place-items: center;

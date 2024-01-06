@@ -1,63 +1,78 @@
-<p>four-in-a-row works!</p>
-<h1 class="uppercase">Forza 4</h1>
-
-<div class="scores">
-  <div>Punteggio Giocatore 1: {{ playerOneScore }}</div>
-  <div>Punteggio Giocatore 2: {{ playerTwoScore }}</div>
-  <br />
-  <div>
-    Is <b>{{ currentPlayer === 1 ? "Red" : "Yellow" }}</b
-    >'s turn
-  </div>
-</div>
-<div class="controls">
-  <button (click)="restartGame()">
-    {{ isMatchOver ? "New Game" : "Restart Game" }}
-  </button>
-</div>
-<div class="flex items-center justify-center" *ngIf="gameReady">
-  <div class="card bg-base-200 shadow-xl" *ngIf="isMatchOver">
-    <div class="card-body">
-      <div class="card-title">Board settings</div>
-
-      <div class="font-bold">Sizing</div>
-      <div class="flex gap-2">
-        <div class="form-control">
-          <label>Rows</label>
-          <input class="input input-primary" type="number" [(ngModel)]="rows" />
-        </div>
-        <div class="form-control">
-          <label>Columns</label>
-          <input class="input input-primary" type="number" [(ngModel)]="cols" />
-        </div>
-      </div>
-      <div class="card-actions justify-end">
-        <button class="btn" (click)="initializeBoard()">Save</button>
-      </div>
+<div class="flex gap-10" *ngIf="gameReady">
+  <div class="scores text-lg">
+    <div class="flex items-center gap-3">
+      <span class="badge badge-error"></span>
+      {{ playerOneScore?.player?.username }}: {{ playerOneScore?.score }}
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="badge badge-warning"></span>
+      {{ playerTwoScore?.player?.username }}: {{ playerTwoScore?.score }}
+    </div>
+    <br />
+    <div class="text-xl">
+      Is
+      <b
+        [ngClass]="{
+          'text-error': currentPlayer === 1,
+          'text-warning': currentPlayer !== 1
+        }"
+        >{{ currentPlayer === 1 ? "Red" : "Yellow" }}</b
+      >'s turn
     </div>
   </div>
-</div>
 
-<div class="flex items-center justify-center" *ngIf="gameReady">
-  <div class="board shadow-xl">
-    <div *ngFor="let row of board; let i = index" class="row">
-      <div
-        *ngFor="let cell of row; let j = index; trackBy: trackByCell"
-        class="cell"
-        (click)="makeMove(j)"
-        [ngStyle]="{ '--row': board.length - i }"
-      >
+  <div class="flex items-center justify-center">
+    <div class="board shadow-xl">
+      <div *ngFor="let row of board; let i = index" class="row">
         <div
-          class="token"
-          *ngIf="cell !== 0"
-          [ngClass]="{
-            'player-one-token': cell === 1,
-            'player-two-token': cell === 2
-          }"
+          *ngFor="let cell of row; let j = index; trackBy: trackByCell"
+          class="cell"
+          (click)="makeMove(j)"
+          [ngStyle]="{ '--row': board.length - i }"
         >
-          <span class="inner-circle"></span>
+          <div
+            class="token"
+            *ngIf="cell !== 0"
+            [ngClass]="{
+              'player-one-token': cell === 1,
+              'player-two-token': cell === 2
+            }"
+          >
+            <span class="inner-circle"></span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<div class="flex justify-center items-center" *ngIf="!gameReady">
+  <div class="absolute z-20 text-5xl text-red-500 font-extrabold text-center">
+    <span class="uppercase">Four in a row</span>
+    <br /><br />
+    <span class="text-yellow-500 italic text-3xl">Start Game!</span>
+  </div>
+  <img
+    src="assets/images/4-in-a-row.png"
+    alt="4 in a row"
+    class="w-full opacity-60 dark:opacity-40"
+  />
+</div>
+
+<ng-template #winnerModal>
+  <div class="flex flex-col gap-8">
+    <div class="text-4xl font-bold text-center">
+      <span>{{ winner?.username }}</span> won!
+    </div>
+    <div class="text-center">
+      <button class="btn btn-success" (click)="restartGame()">Start Game!</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #drawModal>
+  <div class="p-10">
+    <div class="text-6xl font-bold text-center">Draw!</div>
+    <div class="text-center mt-4">
+      <button class="btn btn-success" (click)="restartGame()">Start Game!</button>
+    </div>
+  </div>
+</ng-template>
