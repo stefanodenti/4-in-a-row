@@ -1,49 +1,36 @@
-<div class="flex gap-10" *ngIf="gameReady">
-  <div class="scores text-lg">
-    <div class="flex items-center gap-3">
-      <span class="badge badge-error"></span>
-      {{ playerOneScore?.player?.username }}: {{ playerOneScore?.score }}
-    </div>
-    <div class="flex items-center gap-3">
-      <span class="badge badge-warning"></span>
-      {{ playerTwoScore?.player?.username }}: {{ playerTwoScore?.score }}
-    </div>
-    <br />
-    <div class="text-xl">
-      Is
-      <b
-        [ngClass]="{
-          'text-error': currentPlayer === 1,
-          'text-warning': currentPlayer !== 1
-        }"
-        >{{ currentPlayer === 1 ? "Red" : "Yellow" }}</b
-      >'s turn
-    </div>
+<div
+  class="flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-base-300 to-base-200 p-3 shadow-xl"
+  *ngIf="gameReady"
+>
+  <div class="text-xl">
+    Is
+    <b>{{ currentPlayer()?.username }}</b
+    >'s turn
   </div>
-
-  <div class="flex items-center justify-center">
-    <div class="board shadow-xl">
-      <div *ngFor="let row of board; let i = index" class="row">
+  <div class="board shadow-xl">
+    <div *ngFor="let row of board; let i = index" class="row">
+      <div
+        *ngFor="let cell of row; let j = index; trackBy: trackByCell"
+        class="cell"
+        (click)="makeMove(j)"
+        [ngStyle]="{ '--row': board.length - i }"
+      >
         <div
-          *ngFor="let cell of row; let j = index; trackBy: trackByCell"
-          class="cell"
-          (click)="makeMove(j)"
-          [ngStyle]="{ '--row': board.length - i }"
+          class="token"
+          *ngIf="cell !== 0"
+          [ngClass]="{
+            'player-one-token': cell === 1,
+            'player-two-token': cell === 2
+          }"
         >
-          <div
-            class="token"
-            *ngIf="cell !== 0"
-            [ngClass]="{
-              'player-one-token': cell === 1,
-              'player-two-token': cell === 2
-            }"
-          >
-            <span class="inner-circle"></span>
-          </div>
+          <span class="inner-circle"></span>
         </div>
       </div>
     </div>
   </div>
+  <app-four-in-a-row-score
+    [playerScore]="playerScore()"
+  ></app-four-in-a-row-score>
 </div>
 <div class="flex justify-center items-center" *ngIf="!gameReady">
   <div class="absolute z-20 text-5xl text-red-500 font-extrabold text-center">
@@ -54,7 +41,7 @@
   <img
     src="assets/images/4-in-a-row.png"
     alt="4 in a row"
-    class="w-full opacity-60 dark:opacity-40"
+    class="w-1/2 opacity-60 dark:opacity-40"
   />
 </div>
 
@@ -63,8 +50,15 @@
     <div class="text-4xl font-bold text-center">
       <span>{{ winner?.username }}</span> won!
     </div>
+    <div class="my-10 text-2xl">
+      <app-four-in-a-row-score
+        [playerScore]="playerScore()"
+      ></app-four-in-a-row-score>
+    </div>
     <div class="text-center">
-      <button class="btn btn-success" (click)="restartGame()">Start Game!</button>
+      <button class="btn btn-success" (click)="restartGame()">
+        New Game!
+      </button>
     </div>
   </div>
 </ng-template>
@@ -72,7 +66,9 @@
   <div class="p-10">
     <div class="text-6xl font-bold text-center">Draw!</div>
     <div class="text-center mt-4">
-      <button class="btn btn-success" (click)="restartGame()">Start Game!</button>
+      <button class="btn btn-success" (click)="restartGame()">
+        Start Game!
+      </button>
     </div>
   </div>
 </ng-template>

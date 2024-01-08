@@ -12,15 +12,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrl: './four-in-a-row-settings.component.scss',
 })
 export class FourInARowSettingsComponent {
+  // Icons
   faCheck = faCheck;
+
+  // Variables
   @Output() changeSettings: EventEmitter<FourInARowSettings> =
     new EventEmitter<FourInARowSettings>();
-  settings: FourInARowSettings = {
+  @Input({required: true}) settings: FourInARowSettings = {
     rows: 6,
     columns: 7,
     winCondition: 4,
   };
 
+  // Actions
   save() {
     this.changeSettings.emit(this.settings);
   }

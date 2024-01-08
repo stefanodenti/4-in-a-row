@@ -7,6 +7,7 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FourInARowSettings, PlayerScore } from './models/four-in-a-row.model';
@@ -14,13 +15,14 @@ import { User } from '../../core/models/room.model';
 import { ModalService } from '../../core/service/modal.service';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FourInARowScoreComponent } from './components/four-in-a-row-score/four-in-a-row-score.component';
 
 @Component({
   selector: 'app-four-in-a-row',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './four-in-a-row.component.html',
   styleUrl: './four-in-a-row.component.scss',
+  imports: [CommonModule, FontAwesomeModule, FourInARowScoreComponent],
 })
 export class FourInARowComponent {
   @ViewChild('winnerModal') winnerModal: TemplateRef<HTMLElement> | undefined;
@@ -32,33 +34,34 @@ export class FourInARowComponent {
   };
   winner: User | undefined;
   @Input() set players(user: User[]) {
-    this.playerOneScore = { player: user[0], score: 0 };
-    this.playerTwoScore = { player: user[1], score: 0 };
+    this.playerScore.set([
+      { player: user[0], score: 0 },
+      { player: user[1], score: 0 },
+    ]);
   }
   @Input() set changeState(event: 'start' | 'stop' | 'restart') {
     console.log(event);
-    if (event === 'start') {
-      this.isMatchOver = false;
-      this.initializeBoard();
-    }
     if (event === 'stop') {
       this.initializeBoard();
       this.gameReady = false;
       this.isMatchOver = true;
-    }
-    if (event === 'restart') {
+    } else if (event === 'restart' || event === 'start') {
       this.restartGame();
     }
   }
   @Output() endGame: EventEmitter<void> = new EventEmitter<void>();
-  currentPlayer: number = 1;
+
+  playerScore = signal<PlayerScore[]>([]);
+  currentPlayer = signal<User | undefined>(undefined);
+
   board: number[][] = [];
-  playerOneScore: PlayerScore | undefined;
-  playerTwoScore: PlayerScore | undefined;
+
   isMatchOver: boolean = true;
   isTokenFalling: boolean = false;
   gameReady: boolean = false;
+
   modal: ModalComponent | undefined;
+
   constructor(private modalService: ModalService) {}
 
   initializeBoard() {
@@ -78,19 +81,20 @@ export class FourInARowComponent {
 
   restartGame() {
     this.initializeBoard();
-    this.currentPlayer = 1;
+    this.currentPlayer.set(this.playerScore()[0].player);
     this.isMatchOver = false;
     if (this.modal) this.modal.close();
   }
 
   updateScore() {
-    if (this.playerOneScore === undefined || this.playerTwoScore === undefined)
-      return;
-    if (this.currentPlayer === 1) {
-      this.playerOneScore.score++;
-    } else {
-      this.playerTwoScore.score++;
-    }
+    this.playerScore.update((playerScore) => {
+      return playerScore.map((player) => {
+        if (player.player.id === this.currentPlayer()?.id) {
+          return { ...player, score: player.score + 1 };
+        }
+        return player;
+      });
+    });
   }
 
   checkHorizontal(row: number, col: number): boolean {
@@ -193,11 +197,14 @@ export class FourInARowComponent {
 
     for (let i = 0; i <= this.settings.rows - 1; i++) {
       if (this.board[i][col] === 0) {
-        const currentCellPlayer = this.currentPlayer;
+        const currentCellPlayer = this.currentPlayer();
+        if (!currentCellPlayer) return;
 
         this.isTokenFalling = true;
 
-        this.board[i][col] = currentCellPlayer; // Mostra il gettone dopo un breve ritardo per l'animazione di caduta
+        this.board[i][col] =
+          this.playerScore()[0].player.id === currentCellPlayer.id ? 1 : 2; //TODO Come possiamo fare meglio?
+        // Mostra il gettone dopo un breve ritardo per l'animazione di caduta
         setTimeout(() => {
           this.isTokenFalling = false; // Resetta il flag per permettere di effettuare una nuova mossa
         }, 500);
@@ -208,16 +215,10 @@ export class FourInARowComponent {
           this.checkDiagonal(i, col)
         ) {
           this.updateScore();
-          setTimeout(() => {
-            this.winner =
-              currentCellPlayer === 1
-                ? this.playerOneScore?.player
-                : this.playerTwoScore?.player;
-
-            this.winnerModal
-              ? (this.modal = this.modalService.openModal(this.winnerModal))
-              : alert(`Giocatore ${this.winner?.username} ha vinto!`); // Mostra il risultato con un ritardo per mostrare prima il gettone
-          });
+          this.winner = currentCellPlayer;
+          this.winnerModal
+            ? (this.modal = this.modalService.openModal(this.winnerModal))
+            : alert(`Giocatore ${this.winner?.username} ha vinto!`); // Mostra il risultato con un ritardo per mostrare prima il gettone
           this.isMatchOver = true;
           this.initializeBoard();
           this.endGame.emit();
@@ -238,7 +239,13 @@ export class FourInARowComponent {
             this.initializeBoard();
             this.endGame.emit();
           } else {
-            this.currentPlayer = currentCellPlayer === 1 ? 2 : 1;
+            // Cambia il giocatore corrente
+            const currentPlayerIndex = this.playerScore().findIndex(
+              (player) => player.player.id === currentCellPlayer.id
+            );
+            const nextPlayerIndex =
+              (currentPlayerIndex + 1) % this.playerScore().length;
+            this.currentPlayer.set(this.playerScore()[nextPlayerIndex].player);
           }
         }
 
