@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "4-in-a-row": {
+    "game-room": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/4-in-a-row",
+            "outputPath": "dist/game-room",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "4-in-a-row:build:production"
+              "buildTarget": "game-room:build:production"
             },
             "development": {
-              "buildTarget": "4-in-a-row:build:development"
+              "buildTarget": "game-room:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "4-in-a-row:build"
+            "buildTarget": "game-room:build"
           }
         },
         "test": {

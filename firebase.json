@@ -1,6 +1,6 @@
 {
   "hosting": {
-   "public": "dist/4-in-a-row/browser",
+   "public": "dist/game-room/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
