@@ -1,27 +1,48 @@
-# 4InARow
+# Game-Room
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.9.
+## Descrizione del Progetto
 
-## Development server
+Questo progetto è un'applicazione multi-utente che consente di giocare a vari giochi da tavolo online. Attualmente supporta giochi come Forza 4, Tris, Bingo e si prevede l'aggiunta di altri giochi nel futuro. L'applicazione offre la possibilità di giocare in tempo reale con altri utenti attraverso una piattaforma web user-friendly.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Tecnologie Utilizzate
 
-## Code scaffolding
+- **Frontend:** Angular v17 per la realizzazione dell'interfaccia utente.
+- **Hosting:** Firebase viene utilizzato per l'hosting dell'applicazione.
+- **Backend:** NestJS viene utilizzato come framework per il backend.
+- **Database:** MongoDB è il database utilizzato per la persistenza dei dati relativi agli utenti e alle partite.
+- **Comunicazione in tempo reale:** Socket.IO viene utilizzato per facilitare la comunicazione in tempo reale tra i giocatori.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Funzionalità
 
-## Build
+- **Forza 4:** Implementazione del gioco Forza 4 con la possibilità di partite uno contro uno.
+- **Tris:** Gioco del Tris in multiplayer.
+- **Bingo:** Modalità di gioco del Bingo per più giocatori.
+- **Aggiunte future:** L'applicazione è progettata per consentire facilmente l'aggiunta di nuovi giochi da tavolo nel corso del tempo.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installazione e Utilizzo
 
-## Running unit tests
+Per eseguire l'applicazione localmente, segui questi passaggi:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clona il repository sul tuo computer: `git clone https://github.com/stefanodenti/game-room.git`.
+2. Naviga nella directory del progetto: `cd game-room`.
+3. Installa le dipendenze del frontend: `cd frontend && npm install`.
+4. Avvia il server frontend: `ng serve`.
+5. Installa le dipendenze del backend: `cd ../backend && npm install`.
+6. Avvia il server backend: `npm run start:dev`.
 
-## Running end-to-end tests
+## Deployment
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+L'applicazione è attualmente deployata su Firebase all'indirizzo [URL dell'app]([https://example.firebaseapp.com](https://gameroom-53317.web.app/)).
 
-## Further help
+## Contributi
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Siamo aperti ai contributi! Se desideri contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](link_al_contributing_file).
+
+## Contatti
+
+Per domande o suggerimenti, contatta il team di sviluppo:
+
+- [Stefano Denti](https://github.com/stefanodenti)
+- [Alberto Denti](https://github.com/windyle)
+
+Se vuoi contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](link_al_contributing_file).
