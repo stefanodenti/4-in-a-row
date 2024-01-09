@@ -36,7 +36,7 @@ L'applicazione è attualmente deployata su Firebase all'indirizzo [URL dell'app]
 
 ## Contributi
 
-Siamo aperti ai contributi! Se desideri contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](link_al_contributing_file).
+Siamo aperti ai contributi! Se desideri contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](https://github.com/stefanodenti/game-room/blob/main/CONTRIBUTING.md).
 
 ## Contatti
 
@@ -45,4 +45,4 @@ Per domande o suggerimenti, contatta il team di sviluppo:
 - [Stefano Denti](https://github.com/stefanodenti)
 - [Alberto Denti](https://github.com/windyle)
 
-Se vuoi contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](link_al_contributing_file).
+Se vuoi contribuire a questo progetto, segui le istruzioni nel file [CONTRIBUTING.md](https://github.com/stefanodenti/game-room/blob/main/CONTRIBUTING.md).
