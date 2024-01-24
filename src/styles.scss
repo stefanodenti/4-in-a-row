@@ -9,3 +9,10 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+.card-base {
+  @apply bg-gradient-to-br from-base-300 to-base-200 border border-base-300 shadow-xl;
+}
+.card-transition {
+  @apply hover:shadow-2xl hover:-translate-y-2 transition-all duration-200 ease-in-out;
+}

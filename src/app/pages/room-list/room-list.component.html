@@ -1,58 +1,41 @@
 <!-- Toolbar -->
-<div
-  class="mx-20 mb-8 mt-6 p-5 box-border flex items-center gap-4 bg-base-300 rounded-xl"
->
-  <!-- Title -->
-  <h1 class="text-4xl font-bold uppercase">Lobbies</h1>
+<app-navbar>
+  <div class="flex items-center gap-4">
+    <!-- Title -->
+    <h1 class="text-4xl font-bold uppercase">Lobbies</h1>
 
-  <!-- Actions -->
-  <button class="btn btn-square ml-auto text-xl">
-    <fa-icon [icon]="faCog"></fa-icon>
-  </button>
+    <!-- Actions -->
+    <button class="btn btn-square ml-auto text-xl">
+      <fa-icon [icon]="faCog"></fa-icon>
+    </button>
 
-  <button class="btn btn-error btn-square text-xl">
-    <fa-icon [icon]="faRightFromBracket"></fa-icon>
-  </button>
-</div>
+    <button class="btn btn-error btn-square text-xl">
+      <fa-icon [icon]="faRightFromBracket"></fa-icon>
+    </button>
+  </div>
+</app-navbar>
 
 <!-- Rooms Grid -->
-<div
-  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 overflow-y-auto w-screen h-[calc(100svh_-_12rem)] pt-6 pb-12 px-20 box-border"
->
-  <!-- New Room Card -->
+<app-container>
   <div
-    (click)="createRoom()"
-    class="card h-64 min-w-56 bg-gradient-to-br from-base-300 to-base-200 border border-base-300 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-200 ease-in-out cursor-pointer grid place-items-center"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10"
   >
-    <fa-icon [icon]="faPlus" class="text-6xl"></fa-icon>
-  </div>
-
-  <!-- Open Rooms Cards -->
-  @for (room of rooms; track room.id) {
-
-  <div
-    (click)="joinRoom(room.id, room.name)"
-    class="card relative overflow-hidden h-64 min-w-56 bg-base-200 border border-base-300 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-200 ease-in-out cursor-pointer"
-  >
-    <img
-      alt="bg"
-      class="absolute bottom-0 left-0 w-full opacity-60 dark:opacity-40"
-      src="/assets/images/4-in-a-row.png"
-    />
+    <!-- New Room Card -->
     <div
-      class="card-body z-10 bg-gradient-to-br from-base-200 via-base-200/80 to-transparent"
+      (click)="createRoom()"
+      class="card card-base card-transition h-64 min-w-56 cursor-pointer grid place-items-center"
     >
-      <div class="card-title">{{ room.name }}</div>
-      <div class="badge badge-primary badge-outline">{{ room.game }}</div>
-      <div class="card-actions mt-auto">
-        Hosted by
-        <span class="text-primary font-medium">{{ getHost(room) }}</span>
-      </div>
+      <fa-icon [icon]="faPlus" class="text-6xl"></fa-icon>
     </div>
-  </div>
 
-  }
-</div>
+    <!-- Open Rooms Cards -->
+    @for (room of rooms; track room.id) {
+
+    <app-room-card></app-room-card>
+
+    }
+  </div>
+</app-container>
 
 <!-- Join Modal -->
 <ng-template #join>

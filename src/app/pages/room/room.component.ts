@@ -14,6 +14,7 @@ import { FourInARowSettingsComponent } from '../../games/four-in-a-row/component
 import { FourInARowComponent } from '../../games/four-in-a-row/four-in-a-row.component';
 import { RoomPlayerListComponent } from './components/room-player-list/room-player-list.component';
 import { ModalService } from '../../core/service/modal.service';
+import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -26,6 +27,7 @@ import { ModalService } from '../../core/service/modal.service';
     FourInARowComponent,
     RouterLink,
     RoomPlayerListComponent,
+    NavbarComponent,
   ],
 })
 export default class RoomComponent {
@@ -72,10 +74,11 @@ export default class RoomComponent {
   }
 
   openGameSettings() {
-    if (this.settings) this.modalService.openModal(this.settings, {
-      title: 'Game Settings',
-      position:'bottom',
-    });
+    if (this.settings)
+      this.modalService.openModal(this.settings, {
+        title: 'Game Settings',
+        position: 'bottom',
+      });
     console.log('openGameSettings');
   }
 

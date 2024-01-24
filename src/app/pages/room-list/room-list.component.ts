@@ -9,13 +9,21 @@ import { ModalService } from '../../core/service/modal.service';
 import { Subscription } from 'rxjs';
 import { Room, RoomStateEnum } from '../../core/models/room.model';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../../core/components/navbar/navbar.component';
+import { ContainerComponent } from '../../core/components/container/container.component';
+import { RoomCardComponent } from './components/room-card/room-card.component';
 
 @Component({
   selector: 'app-room-list',
   standalone: true,
-  imports: [FontAwesomeModule],
   templateUrl: './room-list.component.html',
   styleUrl: './room-list.component.scss',
+  imports: [
+    FontAwesomeModule,
+    NavbarComponent,
+    ContainerComponent,
+    RoomCardComponent,
+  ],
 })
 export class RoomListComponent implements OnDestroy {
   //Icons
@@ -39,11 +47,13 @@ export class RoomListComponent implements OnDestroy {
       game: '4 in a row', // TODO: change to ID
       hostId: 'UserPippo123', // TODO: change to ID
       state: RoomStateEnum.Waiting,
-      players: [{
-        id: 'UserPippo123',
-        username: 'UserPippo123',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
-      }],
+      players: [
+        {
+          id: 'UserPippo123',
+          username: 'UserPippo123',
+          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+        },
+      ],
     },
   ];
 
