@@ -1,5 +1,5 @@
 <div
-  (click)="joinRoom(room.id, room.name)"
+  (click)="joinRoom.emit(room())"
   class="card card-transition card-base relative overflow-hidden h-64 min-w-56 cursor-pointer"
 >
   <img
@@ -10,11 +10,11 @@
   <div
     class="card-body z-10 bg-gradient-to-br from-base-200 via-base-200/80 to-transparent"
   >
-    <div class="card-title">{{ room.name }}</div>
-    <div class="badge badge-primary badge-outline">{{ room.game }}</div>
+    <div class="card-title">{{ room().name }}</div>
+    <div class="badge badge-primary badge-outline">{{ room().game }}</div>
     <div class="card-actions mt-auto">
       Hosted by
-      <span class="text-primary font-medium">{{ getHost(room) }}</span>
+      <span class="text-primary font-medium">{{ getHost() }}</span>
     </div>
   </div>
 </div>

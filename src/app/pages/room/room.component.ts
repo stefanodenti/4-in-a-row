@@ -15,6 +15,9 @@ import { FourInARowComponent } from '../../games/four-in-a-row/four-in-a-row.com
 import { RoomPlayerListComponent } from './components/room-player-list/room-player-list.component';
 import { ModalService } from '../../core/service/modal.service';
 import { NavbarComponent } from '../../core/components/navbar/navbar.component';
+import { ContainerComponent } from '../../core/components/container/container.component';
+import { signal } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -28,7 +31,9 @@ import { NavbarComponent } from '../../core/components/navbar/navbar.component';
     RouterLink,
     RoomPlayerListComponent,
     NavbarComponent,
+    ContainerComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RoomComponent {
   @ViewChild('settings') settings: TemplateRef<HTMLElement> | undefined;
@@ -38,7 +43,7 @@ export default class RoomComponent {
   faPlay = faPlay;
   faStop = faStop;
   faArrowLeft = faArrowLeft;
-  room: Room = {
+  room = signal<Room>({
     id: 'wewe',
     name: 'Room 1',
     hostId: 'UserPippo123',
@@ -56,7 +61,7 @@ export default class RoomComponent {
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie',
       },
     ],
-  };
+  });
   roomId: string = '';
   RoomStateEnum = RoomStateEnum;
 
@@ -68,8 +73,8 @@ export default class RoomComponent {
     this.route.params.subscribe((params) => {
       this.roomId = params['id'];
       // TODO: GET ROOM
-      if (this.room.game === '4 in a row')
-        this.room.settings = { rows: 9, columns: 9, winCondition: 4 };
+      if (this.room().game === '4 in a row')
+        this.room().settings = { rows: 9, columns: 9, winCondition: 4 };
     });
   }
 
@@ -83,12 +88,12 @@ export default class RoomComponent {
   }
 
   switchGameState() {
-    if (this.room.state === RoomStateEnum.Waiting) {
-      this.room.state = RoomStateEnum.Playing;
+    if (this.room().state === RoomStateEnum.Waiting) {
+      this.room().state = RoomStateEnum.Playing;
       console.log('startGame');
       this.gameState = 'start';
     } else {
-      this.room.state = RoomStateEnum.Waiting;
+      this.room().state = RoomStateEnum.Waiting;
       console.log('stopGame');
       this.gameState = 'stop';
     }

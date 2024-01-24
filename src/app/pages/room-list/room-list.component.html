@@ -29,9 +29,9 @@
     </div>
 
     <!-- Open Rooms Cards -->
-    @for (room of rooms; track room.id) {
+    @for (room of rooms(); track room.id) {
 
-    <app-room-card></app-room-card>
+    <app-room-card [room]="room" (joinRoom)="joinRoom($event)"></app-room-card>
 
     }
   </div>

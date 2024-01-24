@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { User } from '../../../../core/models/room.model';
 
 @Component({
@@ -6,7 +6,8 @@ import { User } from '../../../../core/models/room.model';
   standalone: true,
   imports: [],
   templateUrl: './room-player-list.component.html',
-  styleUrl: './room-player-list.component.scss'
+  styleUrl: './room-player-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomPlayerListComponent {
   @Input() players: User[] = [];

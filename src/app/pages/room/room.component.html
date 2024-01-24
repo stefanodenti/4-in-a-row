@@ -5,15 +5,15 @@
       <button class="btn btn-square btn-ghost text-xl" [routerLink]="'/rooms'">
         <fa-icon [icon]="faArrowLeft"></fa-icon>
       </button>
-      <h1 class="text-4xl font-bold uppercase">{{ room.name }}</h1>
+      <h1 class="text-4xl font-bold uppercase">{{ room().name }}</h1>
     </div>
     <div class="flex gap-4">
       <!-- Actions -->
-      @if(room.state === RoomStateEnum.Waiting){
+      @if(room().state === RoomStateEnum.Waiting){
       <button class="btn btn-square text-xl" (click)="openGameSettings()">
         <fa-icon [icon]="faCog"></fa-icon>
       </button>
-      } @else if(room.state === RoomStateEnum.Playing){
+      } @else if(room().state === RoomStateEnum.Playing){
       <button class="btn btn-info btn-square text-xl" (click)="restartGame()">
         <fa-icon [icon]="faRefresh"></fa-icon>
       </button>
@@ -22,16 +22,16 @@
       <button
         class="btn text-xl"
         [ngClass]="{
-          'btn-success': room.state === RoomStateEnum.Waiting,
-          'btn-error': room.state === RoomStateEnum.Playing
+          'btn-success': room().state === RoomStateEnum.Waiting,
+          'btn-error': room().state === RoomStateEnum.Playing
         }"
         (click)="switchGameState()"
       >
-        @if (room.state === RoomStateEnum.Playing) {
+        @if (room().state === RoomStateEnum.Playing) {
 
         <span><fa-icon [icon]="faStop"></fa-icon> Stop</span>
 
-        } @else if(room.state === RoomStateEnum.Waiting) {
+        } @else if(room().state === RoomStateEnum.Waiting) {
 
         <span><fa-icon [icon]="faPlay"></fa-icon> Start </span>
 
@@ -41,31 +41,32 @@
   </div>
 </app-navbar>
 <!-- Game -->
-<div class="grid grid-cols-1 xl:grid-cols-12 gap-10 mx-20">
-  <div class="xl:col-span-3">
-    <app-room-player-list
-      [players]="room.players"
-      [hostId]="room.hostId"
-    ></app-room-player-list>
+<app-container>
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-10">
+    <div class="xl:col-span-3">
+      <app-room-player-list
+        [players]="room().players"
+        [hostId]="room().hostId"
+      ></app-room-player-list>
+    </div>
+    <div class="xl:col-span-9">
+      @if(room().game === '4 in a row'){
+      <app-four-in-a-row
+        [settings]="room().settings"
+        [players]="room().players"
+        [changeState]="gameState"
+        (endGame)="room().state = RoomStateEnum.Waiting"
+      ></app-four-in-a-row>
+      }
+    </div>
   </div>
-  <div class="xl:col-span-9">
-    @if(room.game === '4 in a row'){
-    <app-four-in-a-row
-      [settings]="room.settings"
-      [players]="room.players"
-      [changeState]="gameState"
-      (endGame)="room.state = RoomStateEnum.Waiting"
-    ></app-four-in-a-row>
-    }
-  </div>
-</div>
-
+</app-container>
 <!-- Settings Modal -->
 <ng-template #settings>
-  @if(room.game === '4 in a row'){
+  @if(room().game === '4 in a row'){
   <app-four-in-a-row-settings
-    [settings]="room.settings"
-    (changeSettings)="room.settings = $event"
+    [settings]="room().settings"
+    (changeSettings)="room().settings = $event"
   ></app-four-in-a-row-settings>
   }
 </ng-template>

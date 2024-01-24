@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 import { ContainerComponent } from '../../core/components/container/container.component';
 import { RoomCardComponent } from './components/room-card/room-card.component';
+import { signal } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-room-list',
@@ -24,6 +26,7 @@ import { RoomCardComponent } from './components/room-card/room-card.component';
     ContainerComponent,
     RoomCardComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomListComponent implements OnDestroy {
   //Icons
@@ -40,7 +43,7 @@ export class RoomListComponent implements OnDestroy {
   newRoomModal: TemplateRef<HTMLElement> | null = null;
   newRoomModalSubscription: Subscription | null = null;
 
-  rooms: Room[] = [
+  rooms = signal<Room[]>([
     {
       id: 'bdhsjkfb',
       name: 'Room 1',
@@ -55,7 +58,7 @@ export class RoomListComponent implements OnDestroy {
         },
       ],
     },
-  ];
+  ]);
 
   constructor(private modalService: ModalService, private router: Router) {}
 
@@ -67,10 +70,10 @@ export class RoomListComponent implements OnDestroy {
     this.newRoomModalSubscription?.unsubscribe();
   }
 
-  joinRoom(roomId: string, roomName: string) {
+  joinRoom(room: Room) {
     if (this.joinModal) {
       const modal = this.modalService.openModal(this.joinModal, {
-        title: roomName,
+        title: room.name,
         size: 'md',
         position: 'center',
         showCloseButton: true,
@@ -82,7 +85,7 @@ export class RoomListComponent implements OnDestroy {
       modal.closeEvent.subscribe({
         next: (result: boolean) => {
           if (result) {
-            this.router.navigate(['/room', roomId]);
+            this.router.navigate(['/room', room.id]);
           }
         },
       });
@@ -109,9 +112,5 @@ export class RoomListComponent implements OnDestroy {
         },
       });
     }
-  }
-
-  getHost(room: Room) {
-    return room.players.find((player) => player.id === room.hostId)?.username;
   }
 }
