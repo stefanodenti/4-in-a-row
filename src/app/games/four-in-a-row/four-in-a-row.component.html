@@ -6,7 +6,6 @@
     <b>{{ currentPlayer()?.username }}</b
     >'s turn
   </div>
-  Size: {{ room()?.settings.rows }} - {{ room()?.settings.columns }}
   <div class="board shadow-xl">
     <div *ngFor="let row of board(); let i = index" class="row">
       <div

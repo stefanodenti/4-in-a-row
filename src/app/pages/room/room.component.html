@@ -1,11 +1,11 @@
 <!-- Toolbar -->
 <app-navbar>
   <div class="flex justify-between items-center">
-    <div class="flex gap-4">
+    <div class="flex items-center gap-4">
       <button class="btn btn-square btn-ghost text-xl" [routerLink]="'/rooms'">
         <fa-icon [icon]="faArrowLeft"></fa-icon>
       </button>
-      <h1 class="text-4xl font-bold uppercase">{{ room().name }}</h1>
+      <h1 class="text-xl xl:text-4xl font-bold uppercase">{{ room().name }}</h1>
     </div>
     <div class="flex gap-4">
       <!-- Actions -->

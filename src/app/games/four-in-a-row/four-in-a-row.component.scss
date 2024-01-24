@@ -10,10 +10,7 @@
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
-  border: 1px solid;
-  @apply bg-base-200 border-gray-700;
+  @apply w-[30px] xl:w-[50px] h-[30px] xl:h-[50px] bg-base-200 border border-gray-700;
   cursor: pointer;
   position: relative;
   overflow: unset;
