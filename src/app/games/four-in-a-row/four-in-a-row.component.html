@@ -1,8 +1,7 @@
 <div
   class="flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-base-300 to-base-200 p-3 shadow-xl"
-  *ngIf="gameReady"
 >
-  <div class="text-xl">
+  <div class="text-xl" *ngIf="gameReady()">
     Is
     <b>{{ currentPlayer()?.username }}</b
     >'s turn
@@ -32,18 +31,6 @@
     [playerScore]="playerScore()"
   ></app-four-in-a-row-score>
 </div>
-<div class="flex justify-center items-center" *ngIf="!gameReady">
-  <div class="absolute z-20 text-5xl text-red-500 font-extrabold text-center">
-    <span class="uppercase">Four in a row</span>
-    <br /><br />
-    <span class="text-yellow-500 italic text-3xl">Start Game!</span>
-  </div>
-  <img
-    src="assets/images/4-in-a-row.png"
-    alt="4 in a row"
-    class="w-1/2 opacity-60 dark:opacity-40"
-  />
-</div>
 
 <ng-template #winnerModal>
   <div class="flex flex-col gap-8">
@@ -56,9 +43,7 @@
       ></app-four-in-a-row-score>
     </div>
     <div class="text-center">
-      <button class="btn btn-success" (click)="restartGame()">
-        New Game!
-      </button>
+      <button class="btn btn-success" (click)="restartGame()">New Game!</button>
     </div>
   </div>
 </ng-template>

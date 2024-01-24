@@ -52,9 +52,8 @@
     <div class="xl:col-span-9">
       @if(room().game === '4 in a row'){
       <app-four-in-a-row
-        [settings]="room().settings"
-        [players]="room().players"
-        [changeState]="gameState"
+        [room]="room()"
+        [state]="gameState"
         (endGame)="room().state = RoomStateEnum.Waiting"
       ></app-four-in-a-row>
       }
@@ -66,7 +65,7 @@
   @if(room().game === '4 in a row'){
   <app-four-in-a-row-settings
     [settings]="room().settings"
-    (changeSettings)="room().settings = $event"
+    (changeSettings)="updateSettings($event)"
   ></app-four-in-a-row-settings>
   }
 </ng-template>

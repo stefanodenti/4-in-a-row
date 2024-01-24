@@ -18,6 +18,9 @@ import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 import { ContainerComponent } from '../../core/components/container/container.component';
 import { signal } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { FourInARowSettings } from '../../games/four-in-a-row/models/four-in-a-row.model';
+import { ModalComponent } from '../../core/components/modal/modal.component';
+import { take } from 'rxjs';
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -63,9 +66,11 @@ export default class RoomComponent {
     ],
   });
   roomId: string = '';
-  RoomStateEnum = RoomStateEnum;
 
+  RoomStateEnum = RoomStateEnum;
   gameState: 'start' | 'stop' | 'restart' = 'stop';
+
+  activeModal: ModalComponent | undefined;
   constructor(
     private route: ActivatedRoute,
     private modalService: ModalService
@@ -79,14 +84,24 @@ export default class RoomComponent {
   }
 
   openGameSettings() {
-    if (this.settings)
-      this.modalService.openModal(this.settings, {
+    if (this.settings) {
+      this.activeModal = this.modalService.openModal(this.settings, {
         title: 'Game Settings',
         position: 'bottom',
       });
-    console.log('openGameSettings');
+      this.activeModal?.closeEvent.pipe(take(1)).subscribe({
+        next: () => {
+          this.activeModal = undefined;
+        },
+      });
+    }
   }
-
+  updateSettings($event: FourInARowSettings) {
+    this.room.update((room: Room) => {
+      return { ...room, settings: $event };
+    });
+    this.activeModal?.close();
+  }
   switchGameState() {
     if (this.room().state === RoomStateEnum.Waiting) {
       this.room().state = RoomStateEnum.Playing;
