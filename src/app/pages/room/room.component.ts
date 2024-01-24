@@ -78,8 +78,14 @@ export default class RoomComponent {
     this.route.params.subscribe((params) => {
       this.roomId = params['id'];
       // TODO: GET ROOM
-      if (this.room().game === '4 in a row')
-        this.room().settings = { rows: 9, columns: 9, winCondition: 4 };
+      if (this.room().game === '4 in a row') {
+        this.room.update((room: Room) => {
+          return {
+            ...room,
+            settings: { rows: 9, columns: 9, winCondition: 4 },
+          };
+        });
+      }
     });
   }
 

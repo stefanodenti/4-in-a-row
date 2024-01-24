@@ -50,7 +50,7 @@ export class FourInARowComponent {
   playerScore = signal<PlayerScore[]>([]);
   gameReady = signal<boolean>(false);
 
-  board: number[][] = [];
+  board = signal<number[][]>([]);
 
   winner: User | undefined;
   isMatchOver: boolean = true;
@@ -63,8 +63,8 @@ export class FourInARowComponent {
       () => {
         console.log('EFFECT', this.room());
         if (
-          this.board.length !== this.room()?.settings.rows ||
-          this.board[0].length !== this.room()?.settings.columns
+          this.board().length !== this.room()?.settings.rows ||
+          this.board()[0].length !== this.room()?.settings.columns
         ) {
           console.log('Board changed!');
           this.initializeBoard();
@@ -90,11 +90,11 @@ export class FourInARowComponent {
   }
 
   initializeBoard() {
-    this.board = [];
+    this.board.set([]);
     for (let i = 0; i < this.room()?.settings.rows; i++) {
-      this.board[i] = [];
+      this.board()[i] = [];
       for (let j = 0; j < this.room()?.settings.columns; j++) {
-        this.board[i][j] = 0;
+        this.board()[i][j] = 0;
       }
     }
   }
@@ -123,17 +123,20 @@ export class FourInARowComponent {
   }
 
   checkHorizontal(row: number, col: number): boolean {
-    const player = this.board[row][col];
+    const player = this.board()[row][col];
     let count = 1;
     let i = col - 1;
 
-    while (i >= 0 && this.board[row][i] === player) {
+    while (i >= 0 && this.board()[row][i] === player) {
       count++;
       i--;
     }
 
     i = col + 1;
-    while (i < this.room()?.settings.columns && this.board[row][i] === player) {
+    while (
+      i < this.room()?.settings.columns &&
+      this.board()[row][i] === player
+    ) {
       count++;
       i++;
     }
@@ -142,11 +145,11 @@ export class FourInARowComponent {
   }
 
   checkVertical(row: number, col: number): boolean {
-    const player = this.board[row][col];
+    const player = this.board()[row][col];
     let count = 1;
     let i = row - 1;
 
-    while (i >= 0 && this.board[i][col] === player) {
+    while (i >= 0 && this.board()[i][col] === player) {
       count++;
       i--;
     }
@@ -155,14 +158,14 @@ export class FourInARowComponent {
   }
 
   checkDiagonal(row: number, col: number): boolean {
-    const player = this.board[row][col];
+    const player = this.board()[row][col];
 
     // Controllo diagonale da sinistra a destra (\)
     let count = 1;
     let i = row - 1;
     let j = col - 1;
 
-    while (i >= 0 && j >= 0 && this.board[i][j] === player) {
+    while (i >= 0 && j >= 0 && this.board()[i][j] === player) {
       count++;
       i--;
       j--;
@@ -173,7 +176,7 @@ export class FourInARowComponent {
     while (
       i < this.room()?.settings.rows &&
       j < this.room()?.settings.columns &&
-      this.board[i][j] === player
+      this.board()[i][j] === player
     ) {
       count++;
       i++;
@@ -192,7 +195,7 @@ export class FourInARowComponent {
     while (
       i >= 0 &&
       j < this.room()?.settings.columns &&
-      this.board[i][j] === player
+      this.board()[i][j] === player
     ) {
       count++;
       i--;
@@ -204,7 +207,7 @@ export class FourInARowComponent {
     while (
       i < this.room()?.settings.rows &&
       j >= 0 &&
-      this.board[i][j] === player
+      this.board()[i][j] === player
     ) {
       count++;
       i++;
@@ -234,13 +237,13 @@ export class FourInARowComponent {
     }
 
     for (let i = 0; i <= this.room()?.settings.rows - 1; i++) {
-      if (this.board[i][col] === 0) {
+      if (this.board()[i][col] === 0) {
         const currentCellPlayer = this.currentPlayer();
         if (!currentCellPlayer) return;
 
         this.isTokenFalling = true;
 
-        this.board[i][col] =
+        this.board()[i][col] =
           this.playerScore()[0].player.id === currentCellPlayer.id ? 1 : 2; //TODO Come possiamo fare meglio?
         // Mostra il gettone dopo un breve ritardo per l'animazione di caduta
         setTimeout(() => {
@@ -264,7 +267,7 @@ export class FourInARowComponent {
         } else {
           let fullColumns = true;
           for (let j = 0; j < this.room()?.settings.columns; j++) {
-            if (this.board[this.room()?.settings.columns - 1][j] === 0) {
+            if (this.board()[this.room()?.settings.columns - 1][j] === 0) {
               fullColumns = false;
               break;
             }
