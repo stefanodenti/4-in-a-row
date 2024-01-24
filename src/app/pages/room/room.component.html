@@ -2,7 +2,10 @@
 <app-navbar>
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-4">
-      <button class="btn btn-square btn-ghost text-xl" [routerLink]="'/rooms'">
+      <button
+        class="btn max-lg:btn-sm btn-square btn-ghost text-xl"
+        [routerLink]="'/rooms'"
+      >
         <fa-icon [icon]="faArrowLeft"></fa-icon>
       </button>
       <h1 class="text-xl xl:text-4xl font-bold uppercase">{{ room().name }}</h1>
@@ -10,17 +13,23 @@
     <div class="flex gap-4">
       <!-- Actions -->
       @if(room().state === RoomStateEnum.Waiting){
-      <button class="btn btn-square text-xl" (click)="openGameSettings()">
+      <button
+        class="btn max-lg:btn-sm btn-square text-xl"
+        (click)="openGameSettings()"
+      >
         <fa-icon [icon]="faCog"></fa-icon>
       </button>
       } @else if(room().state === RoomStateEnum.Playing){
-      <button class="btn btn-info btn-square text-xl" (click)="restartGame()">
+      <button
+        class="btn max-lg:btn-sm btn-info btn-square text-xl"
+        (click)="restartGame()"
+      >
         <fa-icon [icon]="faRefresh"></fa-icon>
       </button>
       }
 
       <button
-        class="btn text-xl"
+        class="btn text-xl max-lg:btn-sm"
         [ngClass]="{
           'btn-success': room().state === RoomStateEnum.Waiting,
           'btn-error': room().state === RoomStateEnum.Playing
